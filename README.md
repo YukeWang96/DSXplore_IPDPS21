@@ -1,6 +1,6 @@
 <!-- # Train CIFAR10 with PyTorch -->
 
-# DSXplore: Optimizing Convolutional NeuralNetworks via Sliding-Channel Convolutions
+# DSXplore: Optimizing Convolutional Neural Networks via Sliding-Channel Convolutions
 Accepted at **IPDPS-2021** [[arxiv](https://arxiv.org/abs/2101.00745)]
 
 > Author: **Yuke Wang**, Boyuan Feng, and Yufei Ding \
