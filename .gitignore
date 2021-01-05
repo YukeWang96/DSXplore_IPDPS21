@@ -3,4 +3,5 @@ data/
 __pycache__/
 models/__pycache__
 SCC_conv/*egg-info
-SCC_conv/build
+SCC_conv/build/
+SCC_conv/dist/
