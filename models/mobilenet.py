@@ -17,10 +17,6 @@ class Block(nn.Module):
         super(Block, self).__init__()
         global channel_groups
         global overlap
-        # print(channel_groups)
-        # print(overlap)
-        # print(stride)
-        # self.conv1 = nn.Conv2d(in_planes, in_planes, kernel_size=3, stride=stride, padding=1, groups=in_planes, bias=False)
         self.conv1 = torch.nn.Conv2d(in_planes, in_planes, kernel_size=3, stride=stride, padding=1, groups=in_planes)
         self.scc   = SCC(in_planes, in_planes, channel_groups, overlap)
         self.bn1 = nn.BatchNorm2d(in_planes)
@@ -31,7 +27,7 @@ class Block(nn.Module):
     def forward(self, x):
 
         out = self.conv1(x)
-        out = self.SCC(out)
+        out = self.scc(out)
         out = F.relu(self.bn1(out))
 
         # out = F.relu(self.bn1(self.conv1(x)))

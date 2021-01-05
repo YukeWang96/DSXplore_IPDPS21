@@ -8,7 +8,7 @@ import subprocess
 models = [
     # 'VGG11',
     # 'VGG13',
-    'VGG16',
+    # 'VGG16',
     # 'VGG19',
     # 'MobileNet',
     # 'ResNet18',

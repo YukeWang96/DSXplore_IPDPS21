@@ -29,7 +29,7 @@ class BasicBlock(nn.Module):
         #                        stride=1, padding=1, bias=False)
 
         self.conv2 = torch.nn.Conv2d(planes, planes, kernel_size=3, padding=1, groups=planes)
-        self.scc   = scc(planes, planes, channel_groups, overlap)
+        self.scc   = SCC(planes, planes, channel_groups, overlap)
 
         self.bn2 = nn.BatchNorm2d(planes)
 
@@ -66,7 +66,7 @@ class Bottleneck(nn.Module):
         self.bn1 = nn.BatchNorm2d(planes)
         
         self.conv2 = torch.nn.Conv2d(planes, planes, kernel_size=3, padding=1, stride=stride, groups=planes)
-        self.scc   = scc(planes, planes, channel_groups, overlap)
+        self.scc   = SCC(planes, planes, channel_groups, overlap)
         # self.conv2 = nn.Conv2d(planes, planes, kernel_size=3,
                             #    stride=stride, padding=1, bias=False)
         
