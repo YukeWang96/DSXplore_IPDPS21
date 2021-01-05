@@ -4,7 +4,7 @@ import torch.nn as nn
 
 ## only one of the following two package should be imported
 from .scc_conv import *    # CUDA-based SCC implementation.
-from .DW_SCC import *      # Pytorch-based DW+PW, DW+GPW, SCC implementation.
+# from .DW_SCC import *    # Pytorch-based DW+PW, DW+GPW, SCC implementation.
 
 cfg = {
     'VGG11': [64, 'M', 128, 'M', 256, 256, 'M', 512, 512, 'M', 512, 512, 'M'],

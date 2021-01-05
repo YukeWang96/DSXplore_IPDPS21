@@ -19,6 +19,7 @@ from utils import progress_bar
 parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training')
 parser.add_argument('--lr', default=0.01, type=float, help='learning rate')
 parser.add_argument('--model', type=str, default=None, help='model name')
+parser.add_argument('--batch-size', type=int, default=64, help='batch size')
 parser.add_argument('--groups', type=int, default=2, help='channel groups')
 parser.add_argument('--overlap', type=float, default=0.5, help='channel overlapping')
 parser.add_argument('--resume', '-r', action='store_true',
@@ -38,6 +39,7 @@ elif args.model.startswith("MobileNet"):
     net = MobileNet(groups=args.groups, oap=args.overlap)
 elif args.model.startswith("ResNet"):
     net = eval(args.model)(groups=args.groups, oap=args.overlap)
+net = net.to(device)
 
 # Data
 print('==> Preparing data..')
@@ -56,36 +58,12 @@ transform_test = transforms.Compose([
 trainset = torchvision.datasets.CIFAR10(
     root='./data', train=True, download=True, transform=transform_train)
 trainloader = torch.utils.data.DataLoader(
-    trainset, batch_size=64, shuffle=True, num_workers=2)
+    trainset, batch_size=args.batch_size, shuffle=True, num_workers=2)
 
 testset = torchvision.datasets.CIFAR10(
     root='./data', train=False, download=True, transform=transform_test)
 testloader = torch.utils.data.DataLoader(
-    testset, batch_size=64, shuffle=False, num_workers=2)
-
-classes = ('plane', 'car', 'bird', 'cat', 'deer',
-           'dog', 'frog', 'horse', 'ship', 'truck')
-
-# # Model
-# print('==> Building model..')
-# net = VGG('VGG16')
-# print(net)
-# net = ResNet18()
-# net = PreActResNet18()
-# net = GoogLeNet()
-# net = DenseNet121()
-# net = ResNeXt29_2x64d()
-# net = MobileNetV2()
-# net = DPN92()
-# net = ShuffleNetG2()
-# net = SENet18()
-# net = ShuffleNetV2(1)
-# net = EfficientNetB0()
-# net = RegNetX_200MF()
-net = net.to(device)
-if device == 'cuda':
-    net = torch.nn.DataParallel(net)
-    cudnn.benchmark = True
+    testset, batch_size=args.batch_size, shuffle=False, num_workers=2)
 
 if args.resume:
     # Load checkpoint.
@@ -97,8 +75,6 @@ if args.resume:
     start_epoch = checkpoint['epoch']
 
 criterion = nn.CrossEntropyLoss()
-# optimizer = optim.SGD(net.parameters(), lr=args.lr,
-#                       momentum=0.9, weight_decay=5e-4)
 
 # Training
 def train(epoch, optimizer):
@@ -108,7 +84,6 @@ def train(epoch, optimizer):
     correct = 0
     total = 0
     step_time = []
-    # counter = 100
     for batch_idx, (inputs, targets) in enumerate(trainloader):
 
         inputs, targets = inputs.to(device), targets.to(device)

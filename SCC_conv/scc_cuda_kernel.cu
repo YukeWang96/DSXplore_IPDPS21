@@ -2,8 +2,8 @@
 
 #include <cuda.h>
 #include <cuda_runtime.h>
-#include <stdio.h>
 
+#include <stdio.h>
 #include <vector>
 
 // #define regular_backward // one thread per output point
