@@ -1,0 +1,4 @@
+# ninja log v5
+0	18597	1609817224338472552	/home/yuke/DSXplore/SCC_conv/build/temp.linux-x86_64-3.7/scc_cuda.o	c9aa73f5d72b8d43
+0	32771	1609817238511047251	/home/yuke/DSXplore/SCC_conv/build/temp.linux-x86_64-3.7/scc_cuda_kernel.o	ba76a9ed79067e64
+2	31875	1609817442686401544	/home/yuke/DSXplore/SCC_conv/build/temp.linux-x86_64-3.7/scc_cuda_kernel.o	ba76a9ed79067e64
