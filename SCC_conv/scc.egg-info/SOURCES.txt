@@ -1,7 +1,0 @@
-scc_cuda.cpp
-scc_cuda_kernel.cu
-setup.py
-scc.egg-info/PKG-INFO
-scc.egg-info/SOURCES.txt
-scc.egg-info/dependency_links.txt
-scc.egg-info/top_level.txt
