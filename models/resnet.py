@@ -10,7 +10,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from scc_conv import *
+from .scc_conv import *
 
 channel_groups = 2
 overlap = 0.5
