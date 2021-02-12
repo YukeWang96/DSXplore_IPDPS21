@@ -19,7 +19,7 @@ from utils import progress_bar
 parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training')
 parser.add_argument('--lr', default=0.01, type=float, help='learning rate')
 parser.add_argument('--model', type=str, default=None, help='model name')
-parser.add_argument('--batch-size', type=int, default=64, help='batch size')
+parser.add_argument('--batch-size', type=int, default=128, help='batch size')
 parser.add_argument('--groups', type=int, default=2, help='channel groups')
 parser.add_argument('--overlap', type=float, default=0.5, help='channel overlapping')
 parser.add_argument('--resume', '-r', action='store_true',
