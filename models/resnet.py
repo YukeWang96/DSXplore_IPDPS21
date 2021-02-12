@@ -9,6 +9,7 @@ Reference:
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+
 from .scc_conv import *
 
 channel_groups = 2
@@ -158,8 +159,9 @@ def ResNet152():
 
 
 def test():
-    net = ResNet18()
-    y = net(torch.randn(1, 3, 32, 32))
+    net = ResNet18().cuda()
+    y = net(torch.randn(1, 3, 32, 32).cuda())
     print(y.size())
 
-# test()
+if __name__ == "__main__":
+    test()

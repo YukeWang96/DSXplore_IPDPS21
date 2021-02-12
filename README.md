@@ -20,6 +20,16 @@ Accepted at **IPDPS-2021** [[arxiv](https://arxiv.org/abs/2101.00745)]
 + Then execute ``python main.py --model [Model Name] --groups [num_group] --overlap [overlap_ratio]`` .
 + A detailed example of changing backend convolution implementation is illustrated in `models/vgg.py`.
 
+# Cite
+
+```
+@inproceedings{DSXplore,
+  title={DSXplore: Optimizing Convolutional Neural Networks via Sliding-Channel Convolutions},
+  author={Yuke Wang and Boyuan Feng and Yufei Ding},
+  booktitle={2021 IEEE International Parallel and Distributed Processing Symposium (IPDPS)},
+  year={2021}
+}
+```
 
 # Reference
 [Train CIFAR10 with PyTorch](https://github.com/kuangliu/pytorch-cifar.git)
