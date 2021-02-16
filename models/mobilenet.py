@@ -8,15 +8,10 @@ import torch.nn as nn
 import torch.nn.functional as F
 from .scc_conv import *
 
-channel_groups = 2
-overlap = 0.5
-
 class Block(nn.Module):
     '''Depthwise conv + Pointwise conv'''
-    def __init__(self, in_planes, out_planes, stride=1):
+    def __init__(self, in_planes, out_planes, stride=1, channel_groups=2, overlap=0.5):
         super(Block, self).__init__()
-        global channel_groups
-        global overlap
         self.conv1 = torch.nn.Conv2d(in_planes, in_planes, kernel_size=3, stride=stride, padding=1, groups=in_planes)
         self.bn1 = nn.BatchNorm2d(in_planes)
 
@@ -38,8 +33,8 @@ class MobileNet(nn.Module):
 
     def __init__(self, num_classes=10, groups=2, oap=0.5):
         super(MobileNet, self).__init__()
-        channel_groups = groups
-        overlap = oap
+        self.channel_groups = groups
+        self.overlap = oap
 
         self.conv1 = nn.Conv2d(3, 32, kernel_size=3, stride=1, padding=1, bias=False)
         self.bn1 = nn.BatchNorm2d(32)
@@ -51,7 +46,7 @@ class MobileNet(nn.Module):
         for x in self.cfg:
             out_planes = x if isinstance(x, int) else x[0]
             stride = 1 if isinstance(x, int) else x[1]
-            layers.append(Block(in_planes, out_planes, stride))
+            layers.append(Block(in_planes, out_planes, stride, self.channel_groups, self.overlap))
             in_planes = out_planes
         return nn.Sequential(*layers)
 
