@@ -12,16 +12,11 @@ import torch.nn.functional as F
 
 from .scc_conv import *
 
-channel_groups = 2
-overlap = 0.5
-
 class BasicBlock(nn.Module):
     expansion = 1
 
-    def __init__(self, in_planes, planes, stride=1):
+    def __init__(self, in_planes, planes, stride=1, channel_groups=2, overlap=0.5):
         super(BasicBlock, self).__init__()
-        global channel_groups
-        global overlap
 
         self.conv1 = nn.Conv2d(
             in_planes, planes, kernel_size=3, stride=stride, padding=1, bias=False)
@@ -31,7 +26,6 @@ class BasicBlock(nn.Module):
 
         self.conv2 = torch.nn.Conv2d(planes, planes, kernel_size=3, padding=1, groups=planes)
         self.scc   = SCC(planes, planes, channel_groups, overlap)
-
         self.bn2 = nn.BatchNorm2d(planes)
 
         self.shortcut = nn.Sequential()
@@ -58,19 +52,16 @@ class BasicBlock(nn.Module):
 class Bottleneck(nn.Module):
     expansion = 4
 
-    def __init__(self, in_planes, planes, stride=1):
+    def __init__(self, in_planes, planes, stride=1, channel_groups=2, overlap=0.5):
         super(Bottleneck, self).__init__()
-        global channel_groups
-        global overlap
         
         self.conv1 = nn.Conv2d(in_planes, planes, kernel_size=1, bias=False)
         self.bn1 = nn.BatchNorm2d(planes)
         
+        # self.conv2 = nn.Conv2d(planes, planes, kernel_size=3,
+                    #    stride=stride, padding=1, bias=False)
         self.conv2 = torch.nn.Conv2d(planes, planes, kernel_size=3, padding=1, stride=stride, groups=planes)
         self.scc   = SCC(planes, planes, channel_groups, overlap)
-        # self.conv2 = nn.Conv2d(planes, planes, kernel_size=3,
-                            #    stride=stride, padding=1, bias=False)
-        
         self.bn2 = nn.BatchNorm2d(planes)
 
         self.conv3 = nn.Conv2d(planes, self.expansion *
@@ -103,26 +94,23 @@ class ResNet(nn.Module):
     def __init__(self, block, num_blocks, num_classes=10, groups=2, oap=0.5):
         super(ResNet, self).__init__()
         self.in_planes = 64
-        global channel_groups
-        global overlap
-
-        channel_groups = groups
-        overlap = oap
+        self.channel_groups = groups
+        self.overlap = oap
 
         self.conv1 = nn.Conv2d(3, 64, kernel_size=3,
                                stride=1, padding=1, bias=False)
         self.bn1 = nn.BatchNorm2d(64)
-        self.layer1 = self._make_layer(block, 64, num_blocks[0], stride=1)
-        self.layer2 = self._make_layer(block, 128, num_blocks[1], stride=2)
-        self.layer3 = self._make_layer(block, 256, num_blocks[2], stride=2)
-        self.layer4 = self._make_layer(block, 512, num_blocks[3], stride=2)
+        self.layer1 = self._make_layer(block, 64, num_blocks[0], stride=1, channel_groups=self.channel_groups, overlap=self.overlap)
+        self.layer2 = self._make_layer(block, 128, num_blocks[1], stride=2,channel_groups= self.channel_groups,overlap= self.overlap)
+        self.layer3 = self._make_layer(block, 256, num_blocks[2], stride=2,channel_groups= self.channel_groups,overlap= self.overlap)
+        self.layer4 = self._make_layer(block, 512, num_blocks[3], stride=2,channel_groups= self.channel_groups,overlap= self.overlap)
         self.linear = nn.Linear(512*block.expansion, num_classes)
 
-    def _make_layer(self, block, planes, num_blocks, stride):
+    def _make_layer(self, block, planes, num_blocks, stride, channel_groups, overlap):
         strides = [stride] + [1]*(num_blocks-1)
         layers = []
         for stride in strides:
-            layers.append(block(self.in_planes, planes, stride))
+            layers.append(block(self.in_planes, planes, stride, channel_groups, overlap))
             self.in_planes = planes * block.expansion
         return nn.Sequential(*layers)
 
